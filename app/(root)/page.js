@@ -1,7 +1,7 @@
-import Hero from "./Hero";
-import PopularRaffles from "./PopularRaffles";
-import RaffleGuide from "./RaffleGuide";
-import RecentWinners from "./RecentWinners";
+import Hero from "./_components/Hero";
+import PopularRaffles from "./_components/PopularRaffles";
+import RaffleGuide from "./_components/RaffleGuide";
+import RecentWinners from "./_components/RecentWinners";
 
 const Page = () => {
   return (

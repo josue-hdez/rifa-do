@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { Progress } from "./ui/progress";
 import { cn } from "@/lib/cn";
 
 const Countdown = dynamic(() => import("./Countdown"), {
@@ -32,9 +33,7 @@ const RaffleCard = ({ id, title, image, drawDate, status }) => {
         <p>
           30% de <span className="text-green">Boletos vendidos</span>
         </p>
-        <div className="w-full h-3 bg-white rounded-full overflow-hidden">
-          <div className="h-full w-[30%] bg-primary" />
-        </div>
+        <Progress value={30} />
         <p>Tiempo restante</p>
         <Countdown targetDate={drawDate} />
         <Link

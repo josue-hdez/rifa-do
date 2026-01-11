@@ -1,11 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { navLinks } from "../lib/constants";
+import { cn } from "@/lib/cn";
 
 const Navbar = () => {
+  const pathname = usePathname();
+
   return (
     <nav
-      id="top-gradient"
+      id={cn(pathname === "/" && "top-gradient")}
       className="container mx-auto py-6 px-3 flex flex-col sm:flex-row items-center justify-between gap-6"
     >
       <Link href="/">

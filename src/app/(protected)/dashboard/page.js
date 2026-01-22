@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
+
 const Page = () => {
-  return <main>Dashboard</main>;
+  redirect("/dashboard/raffles");
 };
 
 export default Page;

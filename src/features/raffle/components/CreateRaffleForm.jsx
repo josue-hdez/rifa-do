@@ -20,6 +20,7 @@ import BasicInfoStep from "./BasicInfoStep";
 import TicketConfigStep from "./TicketConfigStep";
 import ScheduleRaffleStep from "./ScheduleRaffleStep";
 import BankAccountsStep from "./BankAccountsStep";
+import SummaryStep from "./SummaryStep";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -69,7 +70,9 @@ const CreateRaffleForm = () => {
   return (
     <Card className="w-full max-w-xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-xl">{steps[currentStep]?.title}</CardTitle>
+        <CardTitle className="text-xl">
+          {steps[currentStep]?.title || "Summary"}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form id="create-raffle-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -78,9 +81,9 @@ const CreateRaffleForm = () => {
             {currentStep === 1 && <TicketConfigStep form={form} />}
             {currentStep === 2 && <ScheduleRaffleStep form={form} />}
             {currentStep === 3 && <BankAccountsStep form={form} />}
-            {currentStep === 4 && <div className="text-center">Summary</div>}
           </FieldGroup>
         </form>
+        {currentStep === 4 && <SummaryStep values={form.getValues()} />}
       </CardContent>
       <CardFooter>
         <div className="w-full flex justify-between">

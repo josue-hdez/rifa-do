@@ -1,15 +1,7 @@
 import { z } from "zod";
+import { buildDrawDate } from "@/lib/utils";
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
-const buildDrawDate = (date, time) => {
-  const [hours, minutes, seconds = 0] = time.split(":").map(Number);
-
-  const drawDate = new Date(date);
-  drawDate.setHours(+hours, +minutes, +seconds, 0);
-
-  return drawDate;
-};
 
 export const createRaffleFormSchema = z
   .object({

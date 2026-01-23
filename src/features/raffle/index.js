@@ -1,3 +1,4 @@
 import RafflesEmpty from "./components/RafflesEmpty";
+import CreateRaffleForm from "./components/CreateRaffleForm";
 
-export { RafflesEmpty };
+export { RafflesEmpty, CreateRaffleForm };

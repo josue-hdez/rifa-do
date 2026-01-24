@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -7,6 +8,9 @@ import {
   createRaffleFormDefaultValues,
 } from "../schemas/createRaffleForm.schema";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
+import { createRaffle } from "../raffle.actions";
+import { createBankAccount } from "../bankAccount.actions";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
   Card,
@@ -23,6 +27,7 @@ import BankAccountsStep from "./BankAccountsStep";
 import SummaryStep from "./SummaryStep";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
 
 const STEPS = [
   {
@@ -53,6 +58,7 @@ const STEPS = [
 ];
 
 const CreateRaffleForm = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(createRaffleFormSchema),
     mode: "onTouched",
@@ -61,65 +67,75 @@ const CreateRaffleForm = () => {
   const { steps, currentStep, isLastStep, nextStep, prevStep, markAsLastStep } =
     useMultiStepForm(STEPS, form.trigger);
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     if (!isLastStep.current) return;
 
-    console.log(values);
+    try {
+      const { id: raffleId } = await createRaffle(values);
+      const data = await createBankAccount({ ...values, raffleId });
+
+      if (data) router.back();
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
-    <Card className="w-full max-w-xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-xl">
-          {steps[currentStep]?.title || "Summary"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form id="create-raffle-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            {currentStep === 0 && <BasicInfoStep form={form} />}
-            {currentStep === 1 && <TicketConfigStep form={form} />}
-            {currentStep === 2 && <ScheduleRaffleStep form={form} />}
-            {currentStep === 3 && <BankAccountsStep form={form} />}
-          </FieldGroup>
-        </form>
-        {currentStep === 4 && <SummaryStep values={form.getValues()} />}
-      </CardContent>
-      <CardFooter>
-        <div className="w-full flex justify-between">
-          {currentStep > 0 && (
-            <Button
-              className="w-[49%]"
-              type="button"
-              variant="outline"
-              onClick={prevStep}
-            >
-              <ArrowLeft />
-              Back
-            </Button>
-          )}
-          {currentStep < steps.length ? (
-            <Button
-              className={cn(currentStep === 0 ? "w-full" : "w-[49%]")}
-              type="button"
-              onClick={nextStep}
-            >
-              Next
-              <ArrowRight />
-            </Button>
-          ) : (
-            <Button
-              className="w-[49%]"
-              type="submit"
-              form="create-raffle-form"
-              onClick={markAsLastStep}
-            >
-              Create Raffle
-            </Button>
-          )}
-        </div>
-      </CardFooter>
-    </Card>
+    <>
+      <Card className="w-full max-w-xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-xl">
+            {steps[currentStep]?.title || "Summary"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form id="create-raffle-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              {currentStep === 0 && <BasicInfoStep form={form} />}
+              {currentStep === 1 && <TicketConfigStep form={form} />}
+              {currentStep === 2 && <ScheduleRaffleStep form={form} />}
+              {currentStep === 3 && <BankAccountsStep form={form} />}
+            </FieldGroup>
+          </form>
+          {currentStep === 4 && <SummaryStep values={form.getValues()} />}
+        </CardContent>
+        <CardFooter>
+          <div className="w-full flex justify-between">
+            {currentStep > 0 && (
+              <Button
+                className="w-[49%]"
+                type="button"
+                variant="outline"
+                onClick={prevStep}
+              >
+                <ArrowLeft />
+                Back
+              </Button>
+            )}
+            {currentStep < steps.length ? (
+              <Button
+                className={cn(currentStep === 0 ? "w-full" : "w-[49%]")}
+                type="button"
+                onClick={nextStep}
+              >
+                Next
+                <ArrowRight />
+              </Button>
+            ) : (
+              <Button
+                className="w-[49%]"
+                type="submit"
+                form="create-raffle-form"
+                onClick={markAsLastStep}
+              >
+                Create Raffle
+              </Button>
+            )}
+          </div>
+        </CardFooter>
+      </Card>
+      <Toaster />
+    </>
   );
 };
 

@@ -13,22 +13,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Pause } from "lucide-react";
 
-const RaffleCard = () => {
+const RaffleCard = ({ raffle }) => {
   return (
     <Card>
       <CardHeader>
-        <Badge>Active</Badge>
-        <CardTitle>Combo KTM Navideño</CardTitle>
+        <Badge className="capitalize">{raffle.status}</Badge>
+        <CardTitle>{raffle.title}</CardTitle>
         <CardDescription>
-          <ItemDescription>
-            Ganate 1 de estas 2 KTM Duke 390 0KM o $50,000 DOP este 31 de
-            Diciembre (con el 100% vendido).
-          </ItemDescription>
+          <ItemDescription>{raffle.description}</ItemDescription>
         </CardDescription>
       </CardHeader>
       <CardFooter className="space-x-1.5">
         <Button className="w-[70%]" asChild>
-          <Link href={"/dashboard/raffles/1"}>Manage Raffle</Link>
+          <Link href={`/dashboard/raffles/${raffle.id}`}>Manage Raffle</Link>
         </Button>
         <Button className="w-[30%]" variant="outline">
           <Pause />

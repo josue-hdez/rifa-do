@@ -31,3 +31,13 @@ export const createRaffle = async ({
 
   return data[0];
 };
+
+export const getRaffles = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("raffle").select();
+
+  if (error || !data) throw error;
+
+  return data;
+};

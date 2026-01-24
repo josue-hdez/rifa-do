@@ -1,11 +1,12 @@
+import { getRaffles } from "@/features/raffle/raffle.actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { RafflesEmpty, RaffleCard } from "@/features/raffle";
 
-const Page = () => {
-  const raffles = Array.from({ length: 1 });
+const Page = async () => {
+  const raffles = await getRaffles();
 
   return (
     <main className="container mx-auto p-6">
@@ -25,8 +26,8 @@ const Page = () => {
       {!raffles.length && <RafflesEmpty />}
       {raffles.length ? (
         <div className="grid grid-cols-3 gap-3">
-          {raffles.map((_, index) => (
-            <RaffleCard key={index} />
+          {raffles.map((raffle) => (
+            <RaffleCard key={raffle.id} raffle={raffle} />
           ))}
         </div>
       ) : null}

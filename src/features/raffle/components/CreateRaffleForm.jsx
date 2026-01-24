@@ -74,7 +74,7 @@ const CreateRaffleForm = () => {
       const { id: raffleId } = await createRaffle(values);
       const data = await createBankAccount({ ...values, raffleId });
 
-      if (data) router.back();
+      if (data) router.push("/dashboard/raffles");
     } catch (error) {
       toast.error(error.message);
     }

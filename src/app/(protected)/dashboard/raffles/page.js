@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { RafflesEmpty } from "@/features/raffle";
+import { RafflesEmpty, RaffleCard } from "@/features/raffle";
 
 const Page = () => {
+  const raffles = Array.from({ length: 1 });
+
   return (
     <main className="container mx-auto p-6">
       <div className="flex items-center justify-between">
@@ -20,7 +22,14 @@ const Page = () => {
         </Button>
       </div>
       <Separator className="my-6" />
-      <RafflesEmpty />
+      {!raffles.length && <RafflesEmpty />}
+      {raffles.length ? (
+        <div className="grid grid-cols-3 gap-3">
+          {raffles.map((_, index) => (
+            <RaffleCard key={index} />
+          ))}
+        </div>
+      ) : null}
     </main>
   );
 };

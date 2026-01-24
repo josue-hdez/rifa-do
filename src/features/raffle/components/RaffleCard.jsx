@@ -14,7 +14,7 @@ const RaffleCard = ({ raffle }) => {
   return (
     <Card>
       <CardHeader>
-        <Badge className="capitalize">{raffle.status}</Badge>
+        <Badge>{raffle.is_active ? "Active" : "Inactive"}</Badge>
         <CardTitle>{raffle.title}</CardTitle>
         <CardDescription>
           <ItemDescription>{raffle.description}</ItemDescription>
